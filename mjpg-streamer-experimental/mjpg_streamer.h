@@ -34,7 +34,10 @@
 #include <pthread.h>
 
 #ifdef DEBUG
-#define DBG(...) fprintf(stderr, " DBG(%s, %s(), %d): ", __FILE__, __FUNCTION__, __LINE__); fprintf(stderr, __VA_ARGS__)
+#define DBG(...) do { \
+	fprintf(stderr, " DBG(%s, %s(), %d): ", __FILE__, __FUNCTION__, __LINE__); \
+	fprintf(stderr, __VA_ARGS__); \
+} while(0)
 #else
 #define DBG(...)
 #endif

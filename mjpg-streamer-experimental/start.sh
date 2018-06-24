@@ -25,9 +25,10 @@
 ## This example shows how to invoke mjpg-streamer from the command line
 
 export LD_LIBRARY_PATH="$(pwd)"
-#./mjpg_streamer -i "input_uvc.so --help"
+./mjpg_streamer -i "./input_symbian.so -p 8008" -o "./output_http.so -w ./www"
 
-./mjpg_streamer -i "./input_uvc.so" -o "./output_http.so -w ./www"
+#./mjpg_streamer -i "input_uvc.so --help"
+#./mjpg_streamer -i "./input_uvc.so" -o "./output_http.so -w ./www"
 #./mjpg_streamer -i "./input_uvc.so -d /dev/video0" -i "./input_uvc.so -d /dev/video1" -o "./output_http.so -w ./www"
 #valgrind ./mjpg_streamer -i "./input_uvc.so" -o "./output_http.so -w ./www"
 

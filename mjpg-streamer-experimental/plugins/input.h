@@ -23,7 +23,7 @@
 #include <syslog.h>
 #include "../mjpg_streamer.h"
 #define INPUT_PLUGIN_PREFIX " i: "
-#define IPRINT(...) { char _bf[1024] = {0}; snprintf(_bf, sizeof(_bf)-1, __VA_ARGS__); fprintf(stderr, "%s", INPUT_PLUGIN_PREFIX); fprintf(stderr, "%s", _bf); syslog(LOG_INFO, "%s", _bf); }
+#define IPRINT(...) do{ char _bf[1024] = {0}; snprintf(_bf, sizeof(_bf)-1, __VA_ARGS__); fprintf(stderr, "%s", INPUT_PLUGIN_PREFIX); fprintf(stderr, "%s", _bf); syslog(LOG_INFO, "%s", _bf); } while(0)
 
 /* parameters for input plugin */
 typedef struct _input_parameter input_parameter;

@@ -57,6 +57,7 @@ find_library(JPEG_LIB jpeg)
 #
 
 add_subdirectory(plugins/input_file)
+add_subdirectory(plugins/input_symbian)
 add_subdirectory(plugins/input_http)
 add_subdirectory(plugins/input_opencv)
 add_subdirectory(plugins/input_raspicam)
