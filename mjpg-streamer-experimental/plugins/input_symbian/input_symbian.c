@@ -428,6 +428,7 @@ thread_quit:
 
 void worker_cleanup(void *arg)
 {
+	int i;
 	static unsigned char first_run = 1;
 
 	if(!first_run) {
@@ -439,7 +440,7 @@ void worker_cleanup(void *arg)
 	DBG("cleaning up resources allocated by input thread\n");
 	IPRINT("Frames dropped: %lld\n", dropped);
 
-	for (int i = 0; i < 2; i++) {
+	for (i = 0; i < 2; i++) {
 		free(frames[i].buf);
 		frames[i].buf = NULL;
 		frames[i].len = 0;
