@@ -471,43 +471,25 @@ void send_stream(cfd *context_fd, int input_number)
             "--" BOUNDARY "\r\n");
 
     if(write(context_fd->fd, buffer, strlen(buffer)) < 0) {
-        free(frame);
         return;
     }
 
     DBG("Headers send, sending stream now\n");
 
+    pthread_mutex_lock(&pglobal->in[input_number].db);
     while(!pglobal->stop) {
 
         /* wait for fresh frames */
-        pthread_mutex_lock(&pglobal->in[input_number].db);
         pthread_cond_wait(&pglobal->in[input_number].db_update, &pglobal->in[input_number].db);
 
         /* read buffer */
         frame_size = pglobal->in[input_number].size;
 
-        /* check if framebuffer is large enough, increase it if necessary */
-        if(frame_size > max_frame_size) {
-            DBG("increasing buffer size to %d\n", frame_size);
-
-            max_frame_size = frame_size + TEN_K;
-            if((tmp = realloc(frame, max_frame_size)) == NULL) {
-                free(frame);
-                pthread_mutex_unlock(&pglobal->in[input_number].db);
-                send_error(context_fd->fd, 500, "not enough memory");
-                return;
-            }
-
-            frame = tmp;
-        }
-
         /* copy v4l2_buffer timeval to user space */
         timestamp = pglobal->in[input_number].timestamp;
+	frame = pglobal->in[input_number].buf;
 
-        memcpy(frame, pglobal->in[input_number].buf, frame_size);
         DBG("got frame (size: %d kB)\n", frame_size / 1024);
-
-        pthread_mutex_unlock(&pglobal->in[input_number].db);
 
         #ifdef MANAGMENT
         update_client_timestamp(context_fd->client);
@@ -532,8 +514,7 @@ void send_stream(cfd *context_fd, int input_number)
         sprintf(buffer, "\r\n--" BOUNDARY "\r\n");
         if(write(context_fd->fd, buffer, strlen(buffer)) < 0) break;
     }
-
-    free(frame);
+    pthread_mutex_unlock(&pglobal->in[input_number].db);
 }
 
 #ifdef WXP_COMPAT
