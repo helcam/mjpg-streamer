@@ -30,6 +30,7 @@ Input plugins:
 * input_ptp2
 * input_raspicam ([documentation](plugins/input_raspicam/README.md))
 * input_uvc ([documentation](plugins/input_uvc/README.md))
+* input_symbian ([documentation](plugins/input_symbian/README.md))
 
 Output plugins:
 
